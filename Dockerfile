@@ -42,3 +42,7 @@ RUN apt-get update && apt-get install -y \
     python3 -c "import cv2 ; print(cv2.__version__)" && \
     cd / && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /opencv
+
+# Install TensorFlow:
+RUN pip3 install tensorflow && \
+    python3 -c "import tensorflow as tf; print(tf.Session().run(tf.constant('Hello, TensorFlow!')))"
