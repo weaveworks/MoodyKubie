@@ -1,7 +1,7 @@
-FROM debian:jessie-slim
+FROM ubuntu:16.04
 
 # Install Python3 and OpenCV:
-RUN apt-get update && apt-get install -y \
+RUN apt update && apt install -y \
         build-essential \
         cmake \
         curl \
