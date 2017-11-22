@@ -45,4 +45,4 @@ RUN apt-get update && apt-get install -y \
 
 # Install TensorFlow:
 RUN pip3 install tensorflow && \
-    python3 -c "import tensorflow as tf; print(tf.Session().run(tf.constant('Hello, TensorFlow!')))"
+    python3 -c "import tensorflow as tf; print(tf.Session().run(tf.constant('Hello, TensorFlow')))"
