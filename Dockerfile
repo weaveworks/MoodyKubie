@@ -1,4 +1,6 @@
 FROM ubuntu:16.04
+ARG version
+LABEL version ${version}
 
 # Install Python3 and pip:
 RUN apt-get update && apt-get install -y \
