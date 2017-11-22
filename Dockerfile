@@ -3,7 +3,10 @@ FROM ubuntu:16.04
 # Install Python3 and pip:
 RUN apt-get update && apt-get install -y \
         python3-dev \
-        python3-pip && \
+        python3-pip \
+        python3-numpy \
+        python3-scipy \
+        python3-tk && \
     pip3 install --upgrade pip && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -29,8 +32,7 @@ RUN apt-get update && apt-get install -y \
         libx264-dev \
         libgtk-3-dev \
         libatlas-base-dev \
-        gfortran \
-        python3-numpy && \
+        gfortran && \
     mkdir opencv && \
     cd opencv && \
     curl -fsSLO https://github.com/opencv/opencv/archive/3.3.1.tar.gz && \
@@ -51,3 +53,11 @@ RUN apt-get update && apt-get install -y \
     python3 -c "import cv2 ; print(cv2.__version__)" && \
     cd / && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /opencv
+
+# Install project's dependencies:
+RUN pip3 install \
+        h5py \
+        keras \
+        matplotlib \
+        pandas \
+        Pillow
