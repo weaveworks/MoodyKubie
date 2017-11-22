@@ -1,6 +1,17 @@
 FROM ubuntu:16.04
 
-# Install Python3 and OpenCV:
+# Install Python3 and pip:
+RUN apt-get update && apt-get install -y \
+        python3-dev \
+        python3-pip && \
+    pip3 install --upgrade pip && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install TensorFlow:
+RUN pip3 install tensorflow && \
+    python3 -c "import tensorflow as tf; print(tf.Session().run(tf.constant('Hello, TensorFlow')))"
+
+# Install OpenCV:
 RUN apt-get update && apt-get install -y \
         build-essential \
         cmake \
@@ -19,8 +30,6 @@ RUN apt-get update && apt-get install -y \
         libgtk-3-dev \
         libatlas-base-dev \
         gfortran \
-        python3-dev \
-        python3-pip \
         python3-numpy && \
     mkdir opencv && \
     cd opencv && \
@@ -42,7 +51,3 @@ RUN apt-get update && apt-get install -y \
     python3 -c "import cv2 ; print(cv2.__version__)" && \
     cd / && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /opencv
-
-# Install TensorFlow:
-RUN pip3 install tensorflow && \
-    python3 -c "import tensorflow as tf; print(tf.Session().run(tf.constant('Hello, TensorFlow')))"
