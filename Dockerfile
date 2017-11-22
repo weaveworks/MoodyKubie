@@ -9,11 +9,11 @@ RUN apt-get update && apt-get install -y \
         python3-numpy \
         python3-scipy \
         python3-tk && \
-    pip3 install --upgrade pip && \
+    pip3 install --no-cache-dir --upgrade pip && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install TensorFlow:
-RUN pip3 install tensorflow && \
+RUN pip3 install --no-cache-dir tensorflow && \
     python3 -c "import tensorflow as tf; print(tf.Session().run(tf.constant('Hello, TensorFlow')))"
 
 # Install OpenCV:
@@ -57,7 +57,7 @@ RUN apt-get update && apt-get install -y \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /opencv
 
 # Install project's dependencies:
-RUN pip3 install \
+RUN pip3 install --no-cache-dir \
         h5py \
         keras \
         matplotlib \
