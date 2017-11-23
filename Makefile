@@ -7,20 +7,21 @@ REPO := marccarre
 NAME := cubieface
 IMAGE := $(REPO)/$(NAME)
 VERSION := $(shell ./version)
+ARCH := $(shell uname -m)
 CURRENT_DIR := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 
 clean:
 	-docker rmi -f \
-		$(IMAGE):$(VERSION) \
-		$(IMAGE):latest
+		$(IMAGE):$(VERSION)-$(ARCH) \
+		$(IMAGE):$(ARCH)
 
 build:
 	docker build \
-		-t $(IMAGE):$(VERSION) \
-		-t $(IMAGE):latest \
+		-t $(IMAGE):$(VERSION)-$(ARCH) \
+		-t $(IMAGE):$(ARCH) \
 		--build-arg=version=$(VERSION) \
 		$(CURRENT_DIR)
 
 push:
-	docker push $(IMAGE):$(VERSION)
-	docker push $(IMAGE):latest
+	docker push $(IMAGE):$(VERSION)-$(ARCH)
+	docker push $(IMAGE):$(ARCH)
