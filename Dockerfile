@@ -106,3 +106,13 @@ RUN pip3 install --no-cache-dir \
         matplotlib \
         pandas \
         Pillow
+
+# Install oarriaga/face_classification:
+RUN apt-get update && apt-get install -y \
+        git && \
+    git clone https://github.com/oarriaga/face_classification.git && \
+    apt-get remove --purge -y \
+        git && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+WORKDIR face_classification/src
+CMD python3 video_emotion_color_demo.py
