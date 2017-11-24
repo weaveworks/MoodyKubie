@@ -11,4 +11,4 @@ clean:
 	rm web-service
 
 
-.PHONY: clean
+.PHONY: clean image-arm
