@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- Set this to the main language of your site -->
+<head>
+    <meta charset="utf-8">
+
+    <title>Kubernetes on Cubieboards</title>
+
+    <!-- Enter a brief description of your page -->
+    <meta name="description" content="Let kubernetes tell you your mood">
+
+    <!-- Define a viewport to mobile devices to use - telling the browser to assume that the page is as wide as the device (width=device-width,
+    and setting the initial page zoom level to be 1 (initial-scale=1.0), and fixing width=device-width for iOS9 (shtink-to-fit=no) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <!-- Add normalize.css which enables browsers to render all elements more consistently and in line with modern standards as it only targets particular styles that need normalizing -->
+    <link href="/static/css/normalize.css" rel="stylesheet" media="all">
+
+    <link href="/static/css/styles.css" rel="stylesheet" media="all">
+
+    <!-- Include the HTML5 shiv print polyfill for Internet Explorer browsers 8 and below -->
+    <!--[if lt IE 9]><script src="js/html5shiv-printshiv.js" media="all"></script><![endif]-->
+
+</head>
+<body>
+
+    <div class="wrapper">
+    <!-- The page header typically contains items such as your site heading, logo and possibly the main site navigation -->
+    <!-- ARIA: the landmark role "banner" is set as it is the prime heading or internal title of the page -->
+    <header role="banner">
+        <h1>Cubieboard Mood analyser</h1>
+    </header>
+
+    <footer role="contentinfo">
+
+        <section>
+          <div id="camera">
+            <div class="placeholder">
+              Your browser does not support camera access.<br>
+              We recommend
+              <a href="https://www.google.com/chrome/" target="_blank">Chrome</a>
+              &mdash; modern, secure, fast browser from Google.<br>
+              It's free.
+            </div>
+          </div> 
+        </section>
+
+        <address>
+          <p>Get in touch <a href="mailto:help@weave.works">help@weave.works</a>.</p>
+        </address>
+
+        <!-- Copyright information can be contained within the <small> element. The <time> element is used here to indicate that the '2016' is a date -->
+        <small>Copyright &copy; <time datetime="2016">2016</time></small>
+
+    </footer>
+    
+    </div>
+    
+    <script src="/static/js/jpeg_camera_with_dependencies.min.js" type="text/javascript"></script>
+    <script src="/static/js/camera.js" type="text/javascript"></script>
+    
+</body>
+</html>
