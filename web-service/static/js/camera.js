@@ -1,5 +1,18 @@
-var camera = new JpegCamera("#camera");
+$(function(){
+  
+  var camera = new JpegCamera("#camera");
 
+  $(".uploadbutton").click(function(){
+    var snapshot = camera.capture();
+    snapshot.upload({api_url: "/image"}).done(function(response) {
+      response_container.innerHTML = response;
+      this.discard(); // discard snapshot and show video stream again
+    }).fail(function(status_code, error_message, response) {
+      alert("Upload failed with status " + status_code);
+    });
+  });
+
+});
 /*
 var snapshot = camera.capture();
 
