@@ -30,5 +30,6 @@ func main() {
 	http.HandleFunc("/image", imageUpload)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	http.HandleFunc("/", home)
+	log.Printf("Starting HTTP server on port 9000")
 	http.ListenAndServe(":9000", nil)
 }
