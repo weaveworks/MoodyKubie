@@ -45,8 +45,11 @@ function getHighestEmotion(emotionList){
   return highestEmotionName;
 }
 
-function getEmotions(tracker, emotionClassifier, canvas, cb){
+function getEmotions(tracker, emotionClassifier, imgbuf, cb){
   var MAX_ITER_COUNT = 200;
+  
+  var canvas = buffer2canvas(imgbuf)
+  
   tracker.start(canvas);
 
   function reply(){
@@ -73,23 +76,40 @@ function getEmotions(tracker, emotionClassifier, canvas, cb){
 
 }
 
+function buf2image(buf){
+  var img = new Image();
+  img.src = buf;
+  return img;
+}
+
+function buffer2canvas(buf){
+  return image2canvas(buf2image(buf));
+}
+
+function filename2image(filename){
+  var img = new Image();
+  var imgFile = fs.readFileSync(__dirname + '/' + filename);
+  img.src = imgFile;
+  return img;
+}
+
 // If this is run directly...
 if (require.main === module) {
   var fs = require('fs');
 
-  function filename2image(filename){
-    var img = new Image();
-    var imgFile = fs.readFileSync(__dirname + '/' + filename);
-    img.src = imgFile;
-    return img;
-  }
-
   var imageName = './resources/franck_01829.jpg';
-  var canvas = image2canvas(filename2image(imageName));
+  var buf = fs.readFileSync(__dirname + '/' + imageName);
+  var img = buf2image(buf);
   var ctrack = configuredTracker();
   var emotionClassifier = configuredClassifier(); 
   
-  getEmotions(ctrack, emotionClassifier, canvas, (d)=>console.log(d))
+  getEmotions(ctrack, emotionClassifier, buf, (d)=>console.log(d))
+}
+
+module.exports = {
+  getEmotions: getEmotions,
+  configuredClassifier: configuredClassifier,
+  configuredTracker: configuredTracker
 }
 
 
