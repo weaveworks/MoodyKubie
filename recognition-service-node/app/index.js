@@ -26,8 +26,10 @@ function once(fn, context){
 }
 
 app.post('/classify-emotions', function (req, res) {
+    console.log("Classifying image")
     var canvas = null;
     emotions.getEmotions(tracker, classifier, req.body, once(function (reply){
+        console.log(reply)
         res.json(reply)
     }));
 })

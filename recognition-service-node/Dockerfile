@@ -1,21 +1,12 @@
-FROM arm32v7/ubuntu:latest
+FROM arm32v7/node:latest
 
-# install build essentials for node plugins
-RUN apt-get install -y 
+COPY app/ /app/
 
-
-
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    curl
-
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
-RUN apt-get update && apt-get install -y \
-    nodejs \
-
-WORKDIR app/
+WORKDIR /app/
 
 RUN npm install
+
+EXPOSE 8989
 
 CMD ["node", "index.js"]
 

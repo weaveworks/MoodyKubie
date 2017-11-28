@@ -4,9 +4,8 @@ $(function(){
 
   $(".uploadbutton").click(function(){
     var snapshot = camera.capture();
-    snapshot.upload({api_url: "/image"}).done(function(response) {
-      response_container.innerHTML = response;
-      this.discard(); // discard snapshot and show video stream again
+    snapshot.upload({api_url: "/classify_emotions"}).done(function(response) {
+      console.log(response);
     }).fail(function(status_code, error_message, response) {
       alert("Upload failed with status " + status_code);
     });
