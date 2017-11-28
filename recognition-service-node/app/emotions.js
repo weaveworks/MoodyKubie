@@ -56,6 +56,8 @@ function getEmotions(tracker, emotionClassifier, imgbuf, cb){
     }
     var cp = tracker.getCurrentParameters();
     var er = emotionClassifier.predict(cp);
+    er["party"] = er["crazy"] 
+    delete er["crazy"]
     cb(Object.assign({}, {
       emotion: getHighestEmotion(er),
       iterations: c,
