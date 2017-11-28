@@ -1,5 +1,24 @@
 FROM arm32v7/ubuntu:latest
 
+# install build essentials for node plugins
+RUN apt-get install -y 
+
+
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl
+
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN apt-get update && apt-get install -y \
+    nodejs \
+
+WORKDIR app/
+
+RUN npm install
+
+CMD ["node", "index.js"]
+
 # try https://github.com/auduno/clmtrackr on node.
 # Look at
 # https://github.com/romilly/rpi-docker-tensorflow
