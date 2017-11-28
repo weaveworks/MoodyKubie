@@ -70,15 +70,11 @@ function showEmotions(info){
 
   var canvas = $('#snap-container canvas')[0];
   var ctx = canvas.getContext('2d');
-  ctx.fillStyle = 'green';
+  ctx.fillStyle = "#00ff00";
   
   info.face.forEach(function(point){
     ctx.fillRect(point[0], point[1], 10,10);
   })
-  
-
-  
-  ctx.fillRect(10, 10, 100, 100);
 
   return Promise.resolve(info);
 };
