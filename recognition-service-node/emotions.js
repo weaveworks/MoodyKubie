@@ -40,7 +40,7 @@ function configuredClassifier(){
   return ec;
 }
 
-var imageName = '../franck_01829.jpg';
+var imageName = './franck_01829.jpg';
 var canvas = image2canvas(filename2image(imageName));
 var ctrack = configuredTracker();
 var emotionClassifier = configuredClassifier(); 
