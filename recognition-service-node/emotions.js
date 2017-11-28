@@ -1,18 +1,11 @@
-var clm = require('./js/clm.js');
 var Canvas = require('canvas');
-var fs = require('fs');
+
+var clm = require('./js/clm.js');
 var emotionClassifier = require('./js/emotion_classifier.js');
 var emotionModel = require('./js/emotion_model.js');
 var pModel = require('./js/models/model_pca_20_svm_emotionDetection.js');
 
 var Image = Canvas.Image;
-
-function filename2image(filename){
-  var img = new Image();
-  var imgFile = fs.readFileSync(__dirname + '/' + filename);
-  img.src = imgFile;
-  return img;
-}
 
 function image2canvas(img){
   var canvas = new Canvas(img.width, img.height);
@@ -24,14 +17,14 @@ function image2canvas(img){
 }
 
 function configuredTracker(){
-  var ctrack = new clm.tracker({
+  var tracker = new clm.tracker({
     'searchWindow': 11,
     'scoreThreshold': 0.4, 
     'stopOnConvergence': true
   });
-  ctrack.setResponseMode('single',  ['lbp']);
-  ctrack.init(pModel);
-  return ctrack;
+  tracker.setResponseMode('single',  ['lbp']);
+  tracker.init(pModel);
+  return tracker;
 }
 
 function configuredClassifier(){
@@ -40,43 +33,66 @@ function configuredClassifier(){
   return ec;
 }
 
-var imageName = './franck_01829.jpg';
-var canvas = image2canvas(filename2image(imageName));
-var ctrack = configuredTracker();
-var emotionClassifier = configuredClassifier(); 
-
-ctrack.start(canvas);
-
-ctrack.emitter.on('clmtrackrNotFound', function(){
-    console.log('clmtrackrNotFound');
-});
-
-ctrack.emitter.on('clmtrackrLost', function(){
-    console.log('clmtrackrLost');
-});
-
-var c = 0;
-ctrack.emitter.on('clmtrackrIteration', function(){
-    console.log('clmtrackrIteration', c++);
-});
-
 function getHighestEmotion(emotionList){
-    var highestEmotionRank = 0;
-    var highestEmotionName = 'none';
-    for (var a in emotionList){
-        if (emotionList[a].value > highestEmotionRank){
-            highestEmotionRank = emotionList[a].value; 
-            highestEmotionName = emotionList[a].emotion;
-        }
-    }
-    return highestEmotionName;
+  var highestEmotionRank = 0;
+  var highestEmotionName = 'none';
+  for (var a in emotionList){
+      if (emotionList[a].value > highestEmotionRank){
+          highestEmotionRank = emotionList[a].value; 
+          highestEmotionName = emotionList[a].emotion;
+      }
+  }
+  return highestEmotionName;
 }
 
-ctrack.emitter.on('clmtrackrConverged', function(){
-    console.log('clmtrackrConverged');
-    var cp = ctrack.getCurrentParameters();
+function getEmotions(tracker, emotionClassifier, canvas, cb){
+  var MAX_ITER_COUNT = 200;
+  tracker.start(canvas);
+
+  function reply(){
+    var cp = tracker.getCurrentParameters();
     var er = emotionClassifier.predict(cp);
-    console.log(er);
-    console.log(getHighestEmotion(er));
-});
+    tracker.stop();
+    cb({
+      emotion: getHighestEmotion(er),
+      iterations: c,
+      details: er,
+      face: tracker.getCurrentPosition()
+    })
+}
+
+  // Keep track of the number of iterations
+  // Bail out if it takes too long.
+  var c = 0;
+  tracker.emitter.on('clmtrackrIteration', function(){
+      c++;
+      if(c > MAX_ITER_COUNT){ reply(); }
+  });
+
+  tracker.emitter.on('clmtrackrConverged', reply);
+
+}
+
+// If this is run directly...
+if (require.main === module) {
+  var fs = require('fs');
+
+  function filename2image(filename){
+    var img = new Image();
+    var imgFile = fs.readFileSync(__dirname + '/' + filename);
+    img.src = imgFile;
+    return img;
+  }
+
+  var imageName = './resources/franck_01829.jpg';
+  var canvas = image2canvas(filename2image(imageName));
+  var ctrack = configuredTracker();
+  var emotionClassifier = configuredClassifier(); 
+  
+  getEmotions(ctrack, emotionClassifier, canvas, (d)=>console.log(d))
+}
+
+
+
+
 
