@@ -29,27 +29,34 @@
     <header role="banner">
         <h1>Cubieboard Mood analyser</h1>
     </header>
+    
+    <section class="emotion-dash">
+      
+      <div id="camera">
+        <div class="placeholder">
+          Your browser does not support camera access.<br>
+          We recommend
+          <a href="https://www.google.com/chrome/" target="_blank">Chrome</a>
+          &mdash; modern, secure, fast browser from Google.<br>
+          It's free.
+        </div>
+      </div>  
+
+      <div>         
+        <button class="uploadbutton">Analyse</button> 
+      </div> 
+
+      <div id="snapshot">
+        <div id="snap-container"></div>
+        <h2 class="emotion"></h2>
+      </div>
+
+    </section>
 
     <footer role="contentinfo">
-
-        <section>
-          <div id="camera">
-            <div class="placeholder">
-              Your browser does not support camera access.<br>
-              We recommend
-              <a href="https://www.google.com/chrome/" target="_blank">Chrome</a>
-              &mdash; modern, secure, fast browser from Google.<br>
-              It's free.
-            </div>
-          </div> 
-          <button class="uploadbutton">send</button> 
-        </section>
-
         <address>
           <p>Get in touch <a href="mailto:help@weave.works">help@weave.works</a>.</p>
         </address>
-
-        <!-- Copyright information can be contained within the <small> element. The <time> element is used here to indicate that the '2016' is a date -->
         <small>Copyright &copy; <time datetime="2016">2016</time></small>
 
     </footer>
@@ -57,6 +64,8 @@
     </div>
     
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="//cdn.jsdelivr.net/bluebird/3.5.0/bluebird.js"></script>    
+    <script src="/static/js/spin.min.js" type="text/javascript"></script>
     <script src="/static/js/jpeg_camera_with_dependencies.min.js" type="text/javascript"></script>
     <script src="/static/js/camera.js" type="text/javascript"></script>
     

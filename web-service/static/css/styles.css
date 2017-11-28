@@ -25,9 +25,10 @@ body {
 
 .wrapper {
   max-width:900px;
+  width:900px;
 }
 #camera {
-  display: inline-block;
+  display: block;
   background-color: #eee;
   width: 250px;
   height: 300px;
@@ -37,6 +38,25 @@ body {
   padding: 0.5em;
 }
 
+#snapshot {
+    display: block;
+    background-color: #eee;
+    width: 250px;
+    height: 300px;
+    margin: 0.5em;
+}
+#snapshot canvas{
+    width: 250px;
+    height: 300px;
+}
+#snap-container{
+    position:relative;
+}
+.emotion-dash{
+    display: flex;
+    justify-content: space-around;
+    flex-direction:row;
+}
     
 /* ---------------------------------------------------------
    Print styles

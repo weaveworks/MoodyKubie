@@ -9,9 +9,7 @@ var Image = Canvas.Image;
 
 function image2canvas(img){
   var canvas = new Canvas(img.width, img.height);
-  var overlay = new Canvas(img.width, img.height);
   var ctx = canvas.getContext('2d');
-  var overlayCtx = overlay.getContext('2d');
   ctx.drawImage(img, 0,0);
   return canvas;
 }
@@ -46,33 +44,47 @@ function getHighestEmotion(emotionList){
 }
 
 function getEmotions(tracker, emotionClassifier, imgbuf, cb){
-  var MAX_ITER_COUNT = 200;
+  var MAX_ITER_COUNT = 100;
   
   var canvas = buffer2canvas(imgbuf)
   
-  tracker.start(canvas);
+  
 
-  function reply(){
+  function reply(notes){
+    if(!notes){
+      notes = {};
+    }
     var cp = tracker.getCurrentParameters();
     var er = emotionClassifier.predict(cp);
-    tracker.stop();
-    cb({
+    cb(Object.assign({}, {
       emotion: getHighestEmotion(er),
       iterations: c,
       details: er,
       face: tracker.getCurrentPosition()
-    })
+    }, notes))
 }
+
+  tracker.start(canvas);
+  setTimeout(function(){
+    tracker.stop();
+    reply({ended:"timeout"});
+  }, 10000)
 
   // Keep track of the number of iterations
   // Bail out if it takes too long.
   var c = 0;
   tracker.emitter.on('clmtrackrIteration', function(){
       c++;
-      if(c > MAX_ITER_COUNT){ reply(); }
+      if(c > MAX_ITER_COUNT){ 
+        tracker.stop();
+        reply({ended:"maxiterations"}); 
+      }
   });
 
-  tracker.emitter.on('clmtrackrConverged', reply);
+  tracker.emitter.on('clmtrackrConverged', function(){
+    tracker.stop();
+    reply({ended:"converged"});
+  });
 
 }
 
