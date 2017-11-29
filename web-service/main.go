@@ -6,7 +6,6 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -36,7 +35,6 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "can't read body", http.StatusBadRequest)
 		return
 	}
-	ioutil.WriteFile("./test.jpg", body, os.FileMode(int(0666)))
 
 	response, err := netClient.Post("http://localhost:8989/classify-emotions", "application/octet-stream", bytes.NewReader(body))
 	if err != nil {
