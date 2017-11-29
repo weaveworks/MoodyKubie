@@ -41,8 +41,7 @@ body {
 #snapshot {
     display: block;
     background-color: #eee;
-    width: 250px;
-    height: 300px;
+    width: 400px;
     margin: 0.5em;
 }
 #snapshot canvas{
@@ -51,13 +50,54 @@ body {
 }
 #snap-container{
     position:relative;
+    display: flex;
+    justify-content: center;
+}
+#snap-container canvas {
+    margin-left:auto;
+    margin-right:auto;
 }
 .emotion-dash{
     display: flex;
     justify-content: space-around;
     flex-direction:row;
 }
-    
+
+.emotion{
+    text-align: center;
+}
+.emotion-bars {
+    display: flex;
+    justify-content: space-around;
+    flex-direction:row;
+}
+.emotion-bars div {
+    width: 40px;
+    background-color: blue;
+    align-self: flex-end;
+}
+
+.emotion-labels {
+    display: flex;
+    justify-content: space-around;
+    flex-direction:row;
+}
+
+.emotion-labels div{
+    width:60px;
+    font-size: small;
+    text-align: center;
+}
+#buttonpane{
+    display: flex;
+}
+.uploadbutton{
+    align-self: center;
+    padding:10px;
+    background-color: green;
+    color: white;
+}
+
 /* ---------------------------------------------------------
    Print styles
    ---------------------------------------------------------*/

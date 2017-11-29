@@ -62,19 +62,47 @@ function getEmotions(snapshot){
   });
 };
 
-function showEmotions(info){
-  console.log(info)
-  
-  // Show most likely emotion
-  $(".emotion").html(info.emotion)
-
+function showFace(info){
   var canvas = $('#snap-container canvas')[0];
   var ctx = canvas.getContext('2d');
   ctx.fillStyle = "#00ff00";
   
   info.face.forEach(function(point){
-    ctx.fillRect(point[0], point[1], 10,10);
+    ctx.fillRect(point[0], point[1], 5,5);
   })
+  return Promise.resolve(info);
+}
+
+function showEmotions(info){
+  console.log(info)
+  var max_height = 100;
+  var threshold = 0.4;
+
+  // Show most likely emotion
+  var max = info.details.reduce(function(acc, current){ return Math.max(acc, current.value)}, 0.0);
+  if(max > threshold){
+    $(".emotion").html(info.emotion)
+  }else{
+    $(".emotion").html("neutral")
+  }
+
+  $(".emotion-bars").html("")
+  $(".emotion-labels").html("")
+
+  info.details.forEach(function(e){
+    // bar
+    var $bar = $("<div>");
+    $bar.append($("<div>").css({
+      "height": ""+(e.value*max_height)+"px"
+    }));
+    $(".emotion-bars").append($bar);
+
+    // Label
+    var $label = $("<div>");
+    $label.append($("<p>").text(e.emotion));
+    $label.append($("<p>").text(e.value.toFixed(2)));
+    $(".emotion-labels").append($label)
+  });
 
   return Promise.resolve(info);
 };
@@ -92,6 +120,7 @@ $(function(){
       .then(showSpinner)
       .then(getEmotions)
       .then(hideSpinner)
+      .then(showFace)
       .then(showEmotions)
       .catch(function(err){
         console.error(err);
