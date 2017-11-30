@@ -37,7 +37,8 @@ In another terminal, run the front end service:
 
 # Run the app
 ➤ go run main.go
+2017/11/30 19:21:51 Starting HTTP server on port 9000
 ```
 
-The frontend client files can be found in `web-service/static`
+The front end will be served on port 9000. navigate to http://localhost:9000 to view it. The front end client files can be found in `web-service/static`
 
