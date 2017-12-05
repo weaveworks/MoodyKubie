@@ -26,7 +26,7 @@ function once(fn, context){
 }
 
 app.post('/classify-emotions', function (req, res) {
-    
+
     console.log("Classifying image")
     var canvas = null;
     try{
@@ -46,6 +46,6 @@ console.log("Emotion detection service live on port 8989")
 app.listen(8989)
 
 process.on('uncaughtException', function(err){
-    console.error(err)   
+    console.error(err)
 })
 

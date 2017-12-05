@@ -6,7 +6,7 @@ It was built as a demo for [KubeCon Austin 2017](http://events.linuxfoundation.o
 
 ## Images
 
-The recogniser image can be found on [Docker Hub](https://hub.docker.com/r/briceweave/recognition-service-node/) as `briceweave/recognition-service-node` and will expose the recognition service on port `8989`.
+The recognition service image can be found on [Docker Hub](https://hub.docker.com/r/weaveworks/moodykubie-service/) as `weaveworks/moodykubie-service` and will expose the recognition service on port `8989`.
 
 The UI image can be found on [Docker Hub](https://hub.docker.com/r/weaveworks/moodykubie-ui/) as `weaveworks/moodykubie-ui` and will expose the UI on port `9000`.
 
@@ -14,11 +14,11 @@ The UI image can be found on [Docker Hub](https://hub.docker.com/r/weaveworks/mo
 
 You don't need to build the Docker images to work on the MoodyKubie.
 
-You'll need [Node](https://nodejs.org) and [Go](https://golang.org) installed. Then, in one terminal run the backend recognition service using the following commands:
+You'll need [Node](https://nodejs.org) and [Go](https://golang.org) installed. Then, in one terminal run the recognition service using the following commands:
 
 ```
 # Navigate to the backend service app
-➤ cd recognition-service-node/app/
+➤ cd moodykubie-service/app/
 
 # Download and install dependencies
 ➤ npm install
