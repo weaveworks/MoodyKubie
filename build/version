@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+# Description:
+#   Prints Git project's version.
+#   - if there are uncommitted changes, return "<branch>-<commit hash>-dirty", e.g. "master-dec0ded-dirty"
+#   - else, if latest commit is a tag, return this tag, e.g. "v1.0.0"
+#   - else return "<branch>-<commit hash>", e.g. "master-dec0ded"
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+function ensure_dependencies() {
+  command -v git >/dev/null 2>&1 || {
+    echo >&2 "Please install git before using this script. Exiting..."
+    exit 1
+  }
+}
+
+function has_uncommitted_changes() {
+  ! git diff --exit-code --quiet HEAD >&2
+}
+
+function commit() {
+  git rev-parse --short HEAD
+}
+
+function branch() {
+  git rev-parse --abbrev-ref HEAD | sed 's:/:-:g'
+}
+
+function tag() {
+  git describe --exact-match HEAD 2>/dev/null
+}
+
+function main() {
+  ensure_dependencies
+  if has_uncommitted_changes; then
+    echo -n "$(branch)-$(commit)-dirty"
+  else
+    # shellcheck disable=SC2155
+    local tag="$(tag)"
+    if [ -n "$tag" ]; then
+      echo -n "$tag"
+    else
+      echo -n "$(branch)-$(commit)"
+    fi
+  fi
+}
+
+main
