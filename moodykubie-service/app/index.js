@@ -36,8 +36,18 @@ app.post('/classify-emotions', function (req, res) {
 });
 
 console.log("Emotion detection service live on port 8989");
-app.listen(8989);
+const server = app.listen(8989);
 
 process.on('uncaughtException', function(err) {
     console.error(err);
+});
+
+process.on('SIGINT', () => {
+  server.close((err) => {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    process.exit(0);
+  });
 });
