@@ -6,6 +6,7 @@ all: image push
 REPO := weaveworks
 NAME := moodykubie-ui
 IMAGE := $(REPO)/$(NAME)
+VERSION := $(shell ../build/version)
 CURRENT_DIR := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 
 clean:
@@ -19,8 +20,11 @@ moodykubie-ui: main.go
 
 image: moodykubie-ui
 	docker build \
+		--build-arg=version=$(VERSION) \
+		-t $(IMAGE):$(VERSION) \
 		-t $(IMAGE):latest \
 		$(CURRENT_DIR)
 
 push: image
+	docker push $(IMAGE):$(VERSION)
 	docker push $(IMAGE):latest
