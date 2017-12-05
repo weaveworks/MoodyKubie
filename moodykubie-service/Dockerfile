@@ -1,4 +1,6 @@
 FROM arm32v7/node:latest
+ARG version
+LABEL version ${version}
 
 COPY app/ /app/
 
