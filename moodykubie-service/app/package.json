@@ -14,6 +14,7 @@
     "express": "^4.16.2",
     "jsfeat": "0.0.8",
     "numeric": "^1.2.6",
+    "prom-client": "^10.2.2",
     "window-shim": "^1.0.0"
   }
 }

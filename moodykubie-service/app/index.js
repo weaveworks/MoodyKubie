@@ -2,6 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const emotions = require("./emotions");
 
+const prom = require('prom-client');
+const counter = new prom.Counter({
+  name: 'emotions_total',
+  help: 'Total number of recognised emotions.',
+  labelNames: ['emotion']
+});
+
 const app = express();
 app.use(bodyParser.raw({
     inflate: true,
@@ -27,6 +34,7 @@ app.post('/classify-emotions', function (req, res) {
         var classifier = emotions.configuredClassifier();
         emotions.getEmotions(tracker, classifier, req.body, once(function (reply) {
             console.log("Image Classified after " + reply.iterations + " iterations");
+            counter.labels(reply.emotion).inc();
             res.json(reply);
         }));
     } catch (e) {
@@ -37,6 +45,11 @@ app.post('/classify-emotions', function (req, res) {
 
 console.log("Emotion detection service live on port 8989");
 const server = app.listen(8989);
+
+app.get('/metrics', (req, res) => {
+  res.set('Content-Type', prom.register.contentType);
+  res.end(prom.register.metrics());
+});
 
 process.on('uncaughtException', function(err) {
     console.error(err);
