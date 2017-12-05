@@ -2,10 +2,12 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -20,6 +22,9 @@ var netClient = &http.Client{
 	Timeout:   time.Second * 10,
 	Transport: netTransport,
 }
+
+var backendHost string
+var backendPort string
 
 func home(w http.ResponseWriter, r *http.Request) {
 	log.Println("Serving home page.")
@@ -36,7 +41,7 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response, err := netClient.Post("http://localhost:8989/classify-emotions", "application/octet-stream", bytes.NewReader(body))
+	response, err := netClient.Post(fmt.Sprintf("http://%v:%v/classify-emotions", backendHost, backendPort), "application/octet-stream", bytes.NewReader(body))
 	if err != nil {
 		log.Printf("Error requesting emotions from classifier: %v", err)
 		http.Error(w, "Could not get emotions from classifier", http.StatusBadGateway)
@@ -62,7 +67,18 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func getOrDefault(name, defaultValue string) string {
+	value := os.Getenv(name)
+	if value == "" {
+		log.Printf(fmt.Sprintf("Defaulting %v to [%v]", name, defaultValue))
+		return defaultValue
+	}
+	return value
+}
+
 func main() {
+	backendHost = getOrDefault("SERVICE_HOST", "localhost")
+	backendPort = getOrDefault("SERVICE_PORT", "8989")
 	http.HandleFunc("/classify_emotions", imageUpload)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	http.HandleFunc("/", home)

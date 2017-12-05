@@ -41,4 +41,3 @@ In another terminal, run the UI:
 ```
 
 The UI will be served on port 9000. navigate to http://localhost:9000 to view it. The UI client files can be found in `moodykubie-ui/static`
-
