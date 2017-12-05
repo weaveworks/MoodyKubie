@@ -8,7 +8,7 @@ It was built as a demo for [KubeCon Austin 2017](http://events.linuxfoundation.o
 
 The recogniser image can be found on [Docker Hub](https://hub.docker.com/r/briceweave/recognition-service-node/) as `briceweave/recognition-service-node` and will expose the recognition service on port `8989`.
 
-The frontend image can be found on [Docker Hub](https://hub.docker.com/r/briceweave/cubieface-web-service/) as `briceweave/cubieface-web-service` and will expose the frontend on port `9000`.
+The UI image can be found on [Docker Hub](https://hub.docker.com/r/weaveworks/moodykubie-ui/) as `weaveworks/moodykubie-ui` and will expose the UI on port `9000`.
 
 ## Developing
 
@@ -29,16 +29,16 @@ You'll need [Node](https://nodejs.org) and [Go](https://golang.org) installed. T
 Emotion detection service live on port 8989
 ```
 
-In another terminal, run the front end service:
+In another terminal, run the UI:
 
 ```
-# Navigate to the frontend service
-➤ cd web-service
+# Navigate to the UI
+➤ cd moodykubie-ui
 
 # Run the app
 ➤ go run main.go
 2017/11/30 19:21:51 Starting HTTP server on port 9000
 ```
 
-The front end will be served on port 9000. navigate to http://localhost:9000 to view it. The front end client files can be found in `web-service/static`
+The UI will be served on port 9000. navigate to http://localhost:9000 to view it. The UI client files can be found in `moodykubie-ui/static`
 

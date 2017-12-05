@@ -1,7 +1,7 @@
 FROM scratch
 COPY config.json /
 COPY static/ /static/
-COPY web-service /
+COPY moodykubie-ui /
 EXPOSE 9000
-ENTRYPOINT ["/web-service"]
+ENTRYPOINT ["/moodykubie-ui"]
 
