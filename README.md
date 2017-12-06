@@ -42,6 +42,30 @@ In another terminal, run the UI:
 
 The UI will be served on port 9000. navigate to http://localhost:9000 to view it. The UI client files can be found in `moodykubie-ui/static`
 
+## Run
+
+### Docker
+
+```bash
+docker run --rm --name moodykubie-service \
+    -p 8989:8989 \
+    weaveworks/moodykubie-service:latest
+
+docker run --rm --name moodykubie-ui \
+    --link moodykubie-service \
+    -e SERVICE_HOST=moodykubie-service \
+    -e SERVICE_PORT=8989 \
+    -p 9000:9000 \
+    weaveworks/moodykubie-ui:latest
+
+### Manually trigger a face recognition from web browser.
+
+curl localhost:8989/metrics
+# HELP emotions_total Total number of recognised emotions.
+# TYPE emotions_total counter
+emotions_total{emotion="anger"} 1
+```
+
 ## Build & Push
 
 Get hold of an ARM 32 bit machine (Cubieboard, RPi, etc.) or start a C1 instance on Scaleway, and run the below:
