@@ -41,3 +41,39 @@ In another terminal, run the UI:
 ```
 
 The UI will be served on port 9000. navigate to http://localhost:9000 to view it. The UI client files can be found in `moodykubie-ui/static`
+
+## Build & Push
+
+Get hold of an ARM 32 bit machine (Cubieboard, RPi, etc.) or start a C1 instance on Scaleway, and run the below:
+
+```bash
+apt-get remove docker docker-engine docker.io
+apt-get -yq update
+apt-get -yq install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    git \
+    software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+apt-key fingerprint 0EBFCD88
+dpkg --print-architecture
+add-apt-repository \
+    "deb [arch=armhf] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) \
+    stable"
+apt-get -yq update
+apt-get -yq install docker-ce
+curl -fsSLO https://storage.googleapis.com/golang/go1.9.2.linux-armv6l.tar.gz && \
+    tar -C /usr/local -xzf go1.9.2.linux-armv6l.tar.gz && \
+    rm -f go1.9.2.linux-armv6l.tar.gz
+export PATH=$PATH:/usr/local/go/bin
+docker login
+git clone https://github.com/weaveworks/MoodyKubie.git
+cd MoodyKubie
+cd moodykubie-service
+make all
+cd ..
+cd moodykubie-ui
+make all
+```
