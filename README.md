@@ -66,6 +66,13 @@ curl localhost:8989/metrics
 emotions_total{emotion="anger"} 1
 ```
 
+### Kubernetes
+
+```bash
+cd /path/to/this/project
+kubectl apply -f kubernetes
+```
+
 ## Build & Push
 
 Get hold of an ARM 32 bit machine (Cubieboard, RPi, etc.) or start a C1 instance on Scaleway, and run the below:

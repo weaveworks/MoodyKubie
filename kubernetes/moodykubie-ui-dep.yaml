@@ -1,0 +1,24 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: moodykubie-ui
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: moodykubie-ui
+    spec:
+      containers:
+      - name: moodykubie-ui
+        image: weaveworks/moodykubie-ui:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9000
+          name: http
+        env:
+        - name: SERVICE_HOST
+          value: "$(MOODYKUBIE_SERVICE_SERVICE_HOST)"
+        - name: SERVICE_PORT
+          value: "$(MOODYKUBIE_SERVICE_SERVICE_PORT)"
