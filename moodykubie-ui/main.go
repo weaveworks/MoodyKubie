@@ -8,8 +8,10 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
+	prom "github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
@@ -23,6 +25,17 @@ var netTransport = &http.Transport{
 var netClient = &http.Client{
 	Timeout:   time.Second * 10,
 	Transport: netTransport,
+}
+
+var RequestDuration = prom.NewHistogramVec(prom.HistogramOpts{
+	Name:    "request_duration_seconds",
+	Help:    "Time (in seconds) spent serving HTTP requests.",
+	Buckets: prom.DefBuckets,
+}, []string{"method", "route", "status_code"})
+
+type interceptor struct {
+	http.ResponseWriter
+	statusCode int
 }
 
 var backendHost string
@@ -78,13 +91,30 @@ func getOrDefault(name, defaultValue string) string {
 	return value
 }
 
+func instrument(next http.HandlerFunc) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		begin := time.Now()
+		interceptor := &interceptor{ResponseWriter: w, statusCode: http.StatusOK}
+		next.ServeHTTP(interceptor, r)
+		RequestDuration.WithLabelValues(
+			r.Method,
+			r.RequestURI,
+			strconv.Itoa(interceptor.statusCode),
+		).Observe(time.Since(begin).Seconds())
+	})
+}
+
+func init() {
+	prom.MustRegister(RequestDuration)
+}
+
 func main() {
 	backendHost = getOrDefault("SERVICE_HOST", "localhost")
 	backendPort = getOrDefault("SERVICE_PORT", "8989")
-	http.HandleFunc("/classify_emotions", imageUpload)
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
-	http.HandleFunc("/", home)
+	http.HandleFunc("/classify_emotions", instrument(imageUpload))
 	http.Handle("/metrics", promhttp.Handler())
+	http.Handle("/static", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
+	http.HandleFunc("/", home)
 	log.Printf("Starting HTTP server on port 9000")
 	http.ListenAndServe(":9000", nil)
 }

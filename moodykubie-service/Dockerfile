@@ -1,4 +1,4 @@
-FROM arm32v7/node:latest
+FROM node:latest
 ARG version
 LABEL version ${version}
 
@@ -29,5 +29,3 @@ CMD ["node", "index.js"]
 # https://hub.docker.com/r/arm32v7/ubuntu/
 # https://matchboxdorry.gitbooks.io/matchboxblog/content/blogs/build_and_run_arm_images.html
 # https://github.com/lhelontra/tensorflow-on-arm
-
-
