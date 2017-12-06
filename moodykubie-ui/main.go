@@ -94,12 +94,11 @@ func getOrDefault(name, defaultValue string) string {
 func instrument(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		begin := time.Now()
-		interceptor := &interceptor{ResponseWriter: w, statusCode: http.StatusOK}
-		next.ServeHTTP(interceptor, r)
+		next.ServeHTTP(w, r)
 		RequestDuration.WithLabelValues(
 			r.Method,
 			r.RequestURI,
-			strconv.Itoa(interceptor.statusCode),
+			strconv.Itoa(http.StatusOK),
 		).Observe(time.Since(begin).Seconds())
 	})
 }
@@ -111,9 +110,9 @@ func init() {
 func main() {
 	backendHost = getOrDefault("SERVICE_HOST", "localhost")
 	backendPort = getOrDefault("SERVICE_PORT", "8989")
-	http.HandleFunc("/classify_emotions", instrument(imageUpload))
-	http.Handle("/metrics", promhttp.Handler())
-	http.Handle("/static", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
+	http.Handle("/classify_emotions/", instrument(imageUpload))
+	http.Handle("/metrics/", promhttp.Handler())
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	http.HandleFunc("/", home)
 	log.Printf("Starting HTTP server on port 9000")
 	http.ListenAndServe(":9000", nil)
