@@ -47,8 +47,6 @@ function getEmotions(tracker, emotionClassifier, imgbuf, cb){
   var MAX_ITER_COUNT = 100;
   
   var canvas = buffer2canvas(imgbuf)
-  
-  
 
   function reply(notes){
     if(!notes){
