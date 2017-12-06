@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var netTransport = &http.Transport{
@@ -82,6 +84,7 @@ func main() {
 	http.HandleFunc("/classify_emotions", imageUpload)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	http.HandleFunc("/", home)
+	http.Handle("/metrics", promhttp.Handler())
 	log.Printf("Starting HTTP server on port 9000")
 	http.ListenAndServe(":9000", nil)
 }

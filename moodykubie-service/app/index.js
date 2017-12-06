@@ -12,7 +12,7 @@ const counter = new prom.Counter({
 const app = express();
 app.use(bodyParser.raw({
     inflate: true,
-    limit: '50mb',
+    limit: '250mb',
     type: 'application/octet-stream'
 }));
 
