@@ -11,7 +11,7 @@ var emotions = require("./emotions");
 var app = express()
 app.use(bodyParser.raw({
     inflate: true,
-    limit: '100kb',
+    limit: '50mb',
     type: 'application/octet-stream'
 }));
 
