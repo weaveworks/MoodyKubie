@@ -108,3 +108,7 @@ cd ..
 cd moodykubie-ui
 make all
 ```
+
+## Case 
+
+The cut files are available in the `Case` directory. Note that when opening them in your favorite vector editor, the cut lines may not show up as they are very thin. You may have to turn on "outline" mode. In [Inkscape](https://inkscape.org/en/), this can be found in `View > Display Mode` menu.
