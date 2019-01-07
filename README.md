@@ -117,9 +117,8 @@ The cut files are available in the `Case` directory. Note that when opening them
 
 If you have any questions about, feedback for or problems with `MoodyKubie`:
 
-- Invite yourself to the <a href="https://weaveworks.github.io/community-slack/" target="_blank"> #weave-community </a> slack channel.
-- Ask a question on the <a href="https://weave-community.slack.com/messages/general/"> #weave-community</a> slack channel.
-- Send an email to <a href="mailto:weave-users@weave.works">weave-users@weave.works</a>
-- <a href="https://github.com/weaveworks/MoodyKubie/issues/new">File an issue.</a>
+- Invite yourself to the <a href="https://slack.weave.works/" target="_blank">Weave Users Slack</a>.
+- Ask a question on the [#general](https://weave-community.slack.com/messages/general/) slack channel.
+- [File an issue](https://github.com/weaveworks/MoodyKubie/issues/new).
 
 Your feedback is always welcome!
