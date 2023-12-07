@@ -1,4 +1,4 @@
-# MoodyKubie
+# DEPRECATED: MoodyKubie
 
 MoodyKubie is a kubernetes-native face recognition service built to run on top of an ARM clusters of Cubieboard 2.0 like the [Cubienetes](https://github.com/tomwilkie/cubienetes).
 
